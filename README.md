@@ -10,10 +10,38 @@ API RESTful para gerenciamento de academia de ginástica.
 - Maven
 - H2 Database
 
-## Estrutura inicial
-- Modelagem de entidades: Aluno, Instrutor, Plano, Treino
-- Repositórios JPA
-- Controllers REST
+```
+c:\GarotoDePrograma UwU\Academia--API\
+├── src\
+│   ├── main\
+│   │   ├── java\
+│   │   │   └── com\
+│   │   │       └── academia\
+│   │   │           ├── model\
+│   │   │           │   ├── Aluno.java
+│   │   │           │   ├── Instrutor.java
+│   │   │           │   ├── Plano.java
+│   │   │           │   └── Treino.java
+│   │   │           ├── repository\
+│   │   │           │   ├── AlunoRepository.java
+│   │   │           │   ├── InstrutorRepository.java
+│   │   │           │   ├── PlanoRepository.java
+│   │   │           │   └── TreinoRepository.java
+│   │   │           ├── controller\
+│   │   │           │   ├── AlunoController.java
+│   │   │           │   ├── InstrutorController.java
+│   │   │           │   ├── PlanoController.java
+│   │   │           │   └── TreinoController.java
+│   │   │           └── AcademiaApiApplication.java
+│   │   └── resources\
+│   │       ├── application.properties
+│   │       └── ...
+│   └── test\
+│       └── java\
+│           └── ...
+├── pom.xml
+└── README.md
+```
 
 ## Como executar
 1. Instale o Maven e o Java 17+
