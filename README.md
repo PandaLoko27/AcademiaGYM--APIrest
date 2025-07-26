@@ -1,7 +1,1 @@
-  .   ____          _            __ _ _
- /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
-( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
- \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
-  '  |____| .__|_| |_|_| |_\__, | / / / /
- =========|_|==============|___/=/_/_/_/
- :: Spring Boot :: 
+Com base nos principais conceitos de mapeamento objeto relacional (ORM) usando o Spring Data JPA. Esta é uma API RESTful desenvolvida com ênfase na modelagem de suas entidades, no domínio de uma academia de ginástica.
