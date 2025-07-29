@@ -46,7 +46,6 @@ c:\GarotoDePrograma UwU\Academia--API\
 - Spring Boot
 - Spring Data JPA
 - Maven
-- Banco de dados relacional (ex: H2, PostgreSQL)
 
 ---
 
