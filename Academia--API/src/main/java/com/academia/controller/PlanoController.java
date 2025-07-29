@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.academia.model.Plano;
 import com.academia.repository.PlanoRepository;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/planos")
@@ -38,12 +41,12 @@ public class PlanoController {
     }
 
     @PutMapping("/{id}")
-    public Plano atualizar(@PathVariable Long id, @RequestBody Plano plano) {
+    public ResponseEntity<Plano> atualizar(@PathVariable Long id, @RequestBody @Valid Plano plano) {
         return planoRepository.findById(id)
             .map(p -> {
                 p.setNome(plano.getNome());
                 p.setValorMensal(plano.getValorMensal());
-                return planoRepository.save(p);
+                return ResponseEntity.ok(planoRepository.save(p));
             })
             .orElseThrow(() -> new RuntimeException("Plano não encontrado"));
     }
@@ -51,10 +54,5 @@ public class PlanoController {
     @DeleteMapping("/{id}")
     public void deletar(@PathVariable Long id) {
         planoRepository.deleteById(id);
-    }
-
-    @GetMapping("/lista")
-    public java.util.List<Plano> listarTodos() {
-        return planoRepository.findAll();
     }
 }
