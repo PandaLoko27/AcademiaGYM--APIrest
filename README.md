@@ -1,6 +1,4 @@
-### ⚠️⚠️[EM DESENVOLVIMENTO]⚠️⚠️
----
-# API RESTful para gerenciamento de uma academia de ginástica, desenvolvida com Spring Boot, Spring Data JPA e Maven.
+# 🤸‍♂️ API RESTful para gerenciamento de uma academia de ginástica, desenvolvida com Spring Boot, Spring Data JPA e Maven.
 
 ---
 
