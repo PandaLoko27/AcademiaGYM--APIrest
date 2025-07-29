@@ -1,14 +1,8 @@
 ## [EM DESENVOLVIMENTO]
 
-# Academia API
+API RESTful para gerenciamento de uma academia de ginástica, desenvolvida com Spring Boot, Spring Data JPA e Maven.
 
-API RESTful para gerenciamento de academia de ginástica.
-
-## Tecnologias
-- Spring Boot
-- Spring Data JPA
-- Maven
-- H2 Database
+## Estrutura do Projeto
 
 ```
 c:\GarotoDePrograma UwU\Academia--API\
@@ -43,12 +37,23 @@ c:\GarotoDePrograma UwU\Academia--API\
 └── README.md
 ```
 
+## Tecnologias Utilizadas
+- Java 17+
+- Spring Boot
+- Spring Data JPA
+- Maven
+- Banco de dados relacional (ex: H2, PostgreSQL)
+
 ## Como executar
-1. Instale o Maven e o Java 17+
-2. Execute `mvn spring-boot:run` na raiz do projeto
 
-## Configuração
-- O banco H2 é usado para testes locais (application.properties)
+1. Clone o repositório
+2. Configure o banco de dados em `src/main/resources/application.properties`
+3. Execute o projeto com `mvn spring-boot:run`
 
-## Customização
-Adicione endpoints, regras de negócio e integrações conforme necessário.
+## Endpoints principais
+- `/alunos` - CRUD de alunos
+- `/instrutores` - CRUD de instrutores
+- `/planos` - CRUD de planos
+- `/treinos` - CRUD de treinos
+
+# Feito por Otávio Guedes com ☕ e 🍃
