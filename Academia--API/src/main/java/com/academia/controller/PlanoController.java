@@ -1,9 +1,9 @@
 package com.academia.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,33 +26,41 @@ public class PlanoController {
     private PlanoRepository planoRepository;
 
     @GetMapping
-    public List<Plano> listarPlanos() {
-        return planoRepository.findAll();
+    public ResponseEntity<List<Plano>> listarPlanos() {
+        List<Plano> planos = planoRepository.findAll();
+        return ResponseEntity.ok(planos);
     }
 
     @GetMapping("/{id}")
-    public Optional<Plano> buscarPorId(@PathVariable Long id) {
-        return planoRepository.findById(id);
+    public ResponseEntity<Plano> buscarPorId(@PathVariable Long id) {
+        return planoRepository.findById(id)
+            .map(plano -> ResponseEntity.ok(plano))
+            .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Plano criar(@RequestBody Plano plano) {
-        return planoRepository.save(plano);
+    public ResponseEntity<Plano> criar(@RequestBody @Valid Plano plano) {
+        Plano novoPlano = planoRepository.save(plano);
+        return ResponseEntity.status(HttpStatus.CREATED).body(novoPlano);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Plano> atualizar(@PathVariable Long id, @RequestBody @Valid Plano plano) {
         return planoRepository.findById(id)
-            .map(p -> {
-                p.setNome(plano.getNome());
-                p.setValorMensal(plano.getValorMensal());
-                return ResponseEntity.ok(planoRepository.save(p));
+            .map(planoExistente -> {
+                planoExistente.setNome(plano.getNome());
+                planoExistente.setValorMensal(plano.getValorMensal());
+                return ResponseEntity.ok(planoRepository.save(planoExistente));
             })
-            .orElseThrow(() -> new RuntimeException("Plano não encontrado"));
+            .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public void deletar(@PathVariable Long id) {
-        planoRepository.deleteById(id);
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        if (planoRepository.existsById(id)) {
+            planoRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }
