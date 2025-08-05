@@ -1,12 +1,23 @@
 package com.academia.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.academia.model.Treino;
 import com.academia.repository.TreinoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/treinos")
@@ -15,34 +26,42 @@ public class TreinoController {
     private TreinoRepository treinoRepository;
 
     @GetMapping
-    public List<Treino> listarTreinos() {
-        return treinoRepository.findAll();
+    public ResponseEntity<List<Treino>> listarTreinos() {
+        List<Treino> treinos = treinoRepository.findAll();
+        return ResponseEntity.ok(treinos);
     }
 
     @GetMapping("/{id}")
-    public Optional<Treino> buscarPorId(@PathVariable Long id) {
-        return treinoRepository.findById(id);
+    public ResponseEntity<Treino> buscarPorId(@PathVariable Long id) {
+        return treinoRepository.findById(id)
+            .map(treino -> ResponseEntity.ok(treino))
+            .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Treino criar(@RequestBody Treino treino) {
-        return treinoRepository.save(treino);
+    public ResponseEntity<Treino> criar(@RequestBody @Valid Treino treino) {
+        Treino novoTreino = treinoRepository.save(treino);
+        return ResponseEntity.status(HttpStatus.CREATED).body(novoTreino);
     }
 
     @PutMapping("/{id}")
-    public Treino atualizar(@PathVariable Long id, @RequestBody Treino treino) {
+    public ResponseEntity<Treino> atualizar(@PathVariable Long id, @RequestBody @Valid Treino treino) {
         return treinoRepository.findById(id)
-            .map(t -> {
-                t.setDescricao(treino.getDescricao());
-                t.setAluno(treino.getAluno());
-                t.setInstrutor(treino.getInstrutor());
-                return treinoRepository.save(t);
+            .map(treinoExistente -> {
+                treinoExistente.setDescricao(treino.getDescricao());
+                treinoExistente.setAluno(treino.getAluno());
+                treinoExistente.setInstrutor(treino.getInstrutor());
+                return ResponseEntity.ok(treinoRepository.save(treinoExistente));
             })
-            .orElseThrow(() -> new RuntimeException("Treino não encontrado"));
+            .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public void deletar(@PathVariable Long id) {
-        treinoRepository.deleteById(id);
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        if (treinoRepository.existsById(id)) {
+            treinoRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }
